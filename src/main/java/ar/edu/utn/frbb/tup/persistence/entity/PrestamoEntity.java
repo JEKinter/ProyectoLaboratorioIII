@@ -4,6 +4,7 @@ import ar.edu.utn.frbb.tup.model.Prestamo;
 import ar.edu.utn.frbb.tup.model.TipoMoneda;
 
 public class PrestamoEntity extends BaseEntity{
+    private long numeroCliente;
     private int numeroPrestamo;
     private Integer plazoMeses;
     private Double montoPrestamo;
@@ -11,7 +12,8 @@ public class PrestamoEntity extends BaseEntity{
     private Double interesTotal;
 
     public PrestamoEntity(Prestamo prestamo) {
-        super(prestamo.getNumeroCliente());
+        super(Long.parseLong(prestamo.getNumeroCliente()+""+prestamo.getNumeroPrestamo()));
+        this.numeroCliente = prestamo.getNumeroCliente();
         this.numeroPrestamo = prestamo.getNumeroPrestamo();
         this.plazoMeses = prestamo.getPlazoMeses();
         this.montoPrestamo = prestamo.getMontoPrestamo();
@@ -21,13 +23,17 @@ public class PrestamoEntity extends BaseEntity{
 
     public Prestamo toPrestamo(){
         Prestamo prestamo = new Prestamo();
-        prestamo.setNumeroCliente(super.getId());
+        prestamo.setNumeroCliente(this.numeroCliente);
         prestamo.setNumeroPrestamo(this.numeroPrestamo);
         prestamo.setPlazoMeses(this.plazoMeses);
         prestamo.setMontoPrestamo(this.montoPrestamo);
         prestamo.setMoneda(this.moneda);
         prestamo.setInteresTotal(this.interesTotal);
         return prestamo;
+    }
+
+    public long getNumeroCliente() {
+        return numeroCliente;
     }
 
 }

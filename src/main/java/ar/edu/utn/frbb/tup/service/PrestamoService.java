@@ -110,12 +110,14 @@ public class PrestamoService {
         PrestamoConsultaDto consulta = new PrestamoConsultaDto(dni);
 
         List<Prestamo> prestamosCliente = getPrestamosCliente(dni);
+        logger.info("Lista extension: " + prestamosCliente.size());
         if(prestamosCliente.isEmpty()){
             throw new IllegalArgumentException("El cliente "+dni+" no ha pedido prestamos");
         }
 
         List<PrestamoConsultaCliente> prestamos = new ArrayList<PrestamoConsultaCliente>();
         for (Prestamo p : prestamosCliente) {
+            logger.info(p.toString());
             PrestamoConsultaCliente prestamoCliente = new PrestamoConsultaCliente(p);
             PrestamoOutput prestamoOutput = getPrestamosOutput(p);
             prestamoCliente.setPagosRealizados(prestamoOutput.getPlanPagos().size()-1);
@@ -153,7 +155,7 @@ public class PrestamoService {
     }
 
     private void establecerNumeroPrestamo(Prestamo prestamo, PrestamoOutput prestamoOutput){
-        List<Prestamo>prestamos = getPrestamosCliente(prestamo.getNumeroCliente());
+        List<Prestamo> prestamos = getPrestamosCliente(prestamo.getNumeroCliente());
         int numeroPrestamo;
         if (prestamos.isEmpty()){
             numeroPrestamo = 1;

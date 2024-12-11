@@ -20,7 +20,22 @@ public class PrestamoDao extends AbstractBaseDao{
         for (Object valor : getInMemoryDatabase().values()){
             if (valor.getClass().equals(PrestamoEntity.class)){
                 PrestamoEntity prestamo = (PrestamoEntity) valor;
-                if(prestamo.getId() == dni){
+                if(prestamo.getNumeroCliente() == dni){
+                    prestamosCliente.add(prestamo.toPrestamo());
+                }
+            }
+        }
+
+        return prestamosCliente;
+    }
+
+    public List<Prestamo> getPrestamosById(long id) {
+        List<Prestamo> prestamosCliente = new ArrayList<Prestamo>();
+
+        for (Object valor : getInMemoryDatabase().values()){
+            if (valor.getClass().equals(PrestamoEntity.class)){
+                PrestamoEntity prestamo = (PrestamoEntity) valor;
+                if(prestamo.getId() == id){
                     prestamosCliente.add(prestamo.toPrestamo());
                 }
             }

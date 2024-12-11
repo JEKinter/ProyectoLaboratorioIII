@@ -68,4 +68,4 @@ Se agregan 'PrestamoDao' y 'PrestamoOutputDao' siguiendo la misma lógica que en
 
 ## pom.xml
 
-Se configuró JaCoCo para obtener la cobertura de los test y se agregó la dependencia Hibernate Validator para facilitar ciertas validaciones.
+Se agregaron las dependencias JaCoCo para obtener la cobertura de los test e Hibernate Validator para facilitar ciertas validaciones, además de configurar spring boot para sumar logs al proyecto y así obtener información adicional durante la ejecución.

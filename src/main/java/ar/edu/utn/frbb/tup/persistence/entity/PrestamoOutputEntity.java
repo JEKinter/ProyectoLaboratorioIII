@@ -7,13 +7,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PrestamoOutputEntity extends BaseEntity{
+    private long numeroCliente;
     private int numeroPrestamo;
     private String estado;
     private String mensaje;
     private List<Cuota> planPagos = new ArrayList<>();
 
     public PrestamoOutputEntity(PrestamoOutput prestamoOutput) {
-        super(prestamoOutput.getNumeroCliente());
+        super(Long.parseLong(prestamoOutput.getNumeroCliente()+""+prestamoOutput.getNumeroPrestamo()));
+        this.numeroCliente = prestamoOutput.getNumeroCliente();
         this.numeroPrestamo = prestamoOutput.getNumeroPrestamo();
         this.estado = prestamoOutput.getEstado();
         this.mensaje = prestamoOutput.getMensaje();
@@ -22,7 +24,7 @@ public class PrestamoOutputEntity extends BaseEntity{
 
     public PrestamoOutput toPrestamoOutput(){
         PrestamoOutput prestamoOutput = new PrestamoOutput();
-        prestamoOutput.setNumeroCliente(super.getId());
+        prestamoOutput.setNumeroCliente(this.numeroCliente);
         prestamoOutput.setNumeroPrestamo(this.numeroPrestamo);
         prestamoOutput.setEstado(this.estado);
         prestamoOutput.setMensaje(this.mensaje);
@@ -34,6 +36,10 @@ public class PrestamoOutputEntity extends BaseEntity{
         if (prestamoOutput.getPlanPagos() != null && !(prestamoOutput.getPlanPagos().isEmpty())){
             planPagos.addAll(prestamoOutput.getPlanPagos());
         }
+    }
+
+    public long getNumeroCliente() {
+        return numeroCliente;
     }
 
 
