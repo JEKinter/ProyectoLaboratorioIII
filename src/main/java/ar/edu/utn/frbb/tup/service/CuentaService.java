@@ -74,11 +74,6 @@ public class CuentaService {
                 cuentaDao.save(c);
                 prestamoOtorgado=true;
             }
-            // if (c.getTipoCuenta().equals(TipoDeCuenta.CAJA_DE_AHORROS) && c.getMoneda().equals(TipoMoneda.fromString(prestamo.getMoneda()))){
-            //     double saldoActualizado = c.getSaldo()+ prestamo.getMontoPrestamo();
-            //     c.setSaldo(saldoActualizado);
-            //     cuentaDao.save(c);
-            // }
         }
 
     }

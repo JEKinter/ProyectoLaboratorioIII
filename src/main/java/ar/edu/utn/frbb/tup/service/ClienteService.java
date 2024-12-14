@@ -39,11 +39,6 @@ public class ClienteService {
         }   
         logger.info("Valida dni");
 
-        if (cliente.getEdad() < 18) {
-            throw new IllegalArgumentException("El cliente debe ser mayor a 18 años");
-        }
-        logger.info("Valida edad");
-
         clienteDao.save(cliente);
         return cliente;
     }

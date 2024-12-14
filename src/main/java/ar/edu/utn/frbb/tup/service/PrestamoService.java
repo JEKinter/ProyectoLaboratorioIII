@@ -62,7 +62,8 @@ public class PrestamoService {
     }
 
     private String calcularScoring(Long dni){
-        boolean valido = ScoreCrediticioService.verificarScore(dni);
+        ScoreCrediticioService scoreCrediticioService = new ScoreCrediticioService();
+        boolean valido = scoreCrediticioService.verificarScore(dni);
         if (!valido){
             return "RECHAZADO";
         }
@@ -96,11 +97,11 @@ public class PrestamoService {
             throw new PrestamoNoOtorgadoException("No posee una cuenta en esa moneda");
         }
 
-        if (prestamo.getMontoPrestamo() >= 6000000){
+        if (prestamo.getMontoPrestamo() >= 1000000){
             throw new PrestamoNoOtorgadoException("El monto a solicitar es mayor al que se le puede ofrecer en este momento");
         }
 
-        if( (getPrestamosCliente((int)prestamo.getNumeroCliente())).size() > 3 ){
+        if( (getPrestamosCliente((prestamo.getNumeroCliente())).size() > 3 )){
             throw new PrestamoNoOtorgadoException("Es deudor de 3 prestamos. Finalice el pago de los mencionados antes de solicitar otro prestamo");
         }
 

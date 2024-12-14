@@ -18,5 +18,8 @@ public class ClienteValidator {
         } catch (Exception e) {
             throw new IllegalArgumentException("Error en el formato de fecha");
         }
+        if (clienteDto.getEdad() < 18) {
+            throw new IllegalArgumentException("El cliente debe ser mayor a 18 años");
+        }
     }
 }

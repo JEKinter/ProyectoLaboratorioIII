@@ -57,7 +57,7 @@ Se maneja los métodos Post y Get relacionados con la petición y consulta de pr
 Clase encargada de a generación y adición de cuotas para los planes de pago de los préstamos.
 
 ### ScoreCrediticioService
-Esta clase tiene como objetivo simular el servicio externo de calificación de crédito por lo que en pos de la simplicidad únicamente retorna un booleano con un 50% para cada resultado, en base a lo cual se decide si el cliente posee el ScoreCrediticio necesario.
+Esta clase tiene como objetivo simular el servicio externo de calificación de crédito por lo que en pos de la simplicidad únicamente retorna true (Equivalente a un score válido para préstamos) si el dni del cliente es inpar y false si es par;
 
 ### CuentaService
 Se agrega el método 'actualizarCuentaCliente', el cual se asegura de la existencia de una cuenta capacitada para recibir el préstamo y la actualiza con los nuevos valores una vez otorgado el préstamo.

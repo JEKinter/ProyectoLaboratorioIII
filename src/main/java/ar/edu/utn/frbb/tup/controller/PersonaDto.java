@@ -1,5 +1,8 @@
 package ar.edu.utn.frbb.tup.controller;
 
+import java.time.LocalDate;
+import java.time.Period;
+
 public class PersonaDto {
     private String nombre;
     private String apellido;
@@ -37,4 +40,11 @@ public class PersonaDto {
     public void setFechaNacimiento(String fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
+
+     public int getEdad() {
+        LocalDate currentDate = LocalDate.now();
+        Period agePeriod = Period.between(LocalDate.parse(fechaNacimiento), currentDate);
+        return agePeriod.getYears();
+    }
+
 }

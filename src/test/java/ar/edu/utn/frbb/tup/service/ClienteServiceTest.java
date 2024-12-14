@@ -35,19 +35,15 @@ public class ClienteServiceTest {
     @Mock
     private ClienteDao clienteDao;
 
+    @Mock
+    private ClienteDto clienteDto;
+
     @InjectMocks
     private ClienteService clienteService;
 
     @BeforeAll
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-    }
-
-    @Test
-    public void testClienteMenor18Años() {
-        ClienteDto clienteMenorDeEdad = new ClienteDto();
-        clienteMenorDeEdad.setFechaNacimiento("2020-03-18");
-        assertThrows(IllegalArgumentException.class, () -> clienteService.darDeAltaCliente(clienteMenorDeEdad));
     }
 
     @Test
@@ -90,6 +86,8 @@ public class ClienteServiceTest {
                 .setMoneda(TipoMoneda.PESOS)
                 .setBalance(500000)
                 .setTipoCuenta(TipoCuenta.CAJA_AHORRO);
+        
+        cuenta.setTitular(pepeRino.getDni());
 
         when(clienteDao.find(26456439, true)).thenReturn(pepeRino);
 
@@ -98,7 +96,7 @@ public class ClienteServiceTest {
         verify(clienteDao, times(1)).save(pepeRino);
 
         assertEquals(1, pepeRino.getCuentas().size());
-        assertEquals(pepeRino, cuenta.getTitular());
+        assertEquals(pepeRino.getDni(), cuenta.getTitular());
 
     }
 
@@ -117,6 +115,8 @@ public class ClienteServiceTest {
                 .setBalance(500000)
                 .setTipoCuenta(TipoCuenta.CAJA_AHORRO);
 
+        cuenta.setTitular(luciano.getDni());
+
         when(clienteDao.find(26456439, true)).thenReturn(luciano);
 
         clienteService.agregarCuenta(cuenta);
@@ -126,10 +126,12 @@ public class ClienteServiceTest {
                 .setBalance(500000)
                 .setTipoCuenta(TipoCuenta.CAJA_AHORRO);
 
+        cuenta2.setTitular(luciano.getDni());
+
         assertThrows(TipoCuentaAlreadyExistsException.class, () -> clienteService.agregarCuenta(cuenta2));
         verify(clienteDao, times(1)).save(luciano);
         assertEquals(1, luciano.getCuentas().size());
-        assertEquals(luciano, cuenta.getTitular());
+        assertEquals(luciano.getDni(), cuenta.getTitular());
 
     }
 
@@ -151,6 +153,8 @@ public class ClienteServiceTest {
                 .setBalance(100)
                 .setTipoCuenta(TipoCuenta.CAJA_AHORRO);
 
+        cuenta1.setTitular(peperino.getDni());
+
         when(clienteDao.find(26456439, true)).thenReturn(peperino);
 
         clienteService.agregarCuenta(cuenta1);
@@ -160,13 +164,15 @@ public class ClienteServiceTest {
                 .setBalance(100)
                 .setTipoCuenta(TipoCuenta.CUENTA_CORRIENTE);
 
+        cuenta2.setTitular(peperino.getDni());
+
         assertDoesNotThrow(() -> clienteService.agregarCuenta(cuenta2), "Las cuentas son iguales.");
         verify(clienteDao, times(2)).save(peperino);
         assertEquals(2, peperino.getCuentas().size());
         assertEquals(TipoCuenta.CAJA_AHORRO, cuenta1.getTipoCuenta());
         assertEquals(TipoCuenta.CUENTA_CORRIENTE, cuenta2.getTipoCuenta());
-        assertEquals(peperino, cuenta1.getTitular());
-        assertEquals(peperino, cuenta2.getTitular());
+        assertEquals(peperino.getDni(), cuenta1.getTitular());
+        assertEquals(peperino.getDni(), cuenta2.getTitular());
     }
 
 
@@ -184,6 +190,8 @@ public class ClienteServiceTest {
                 .setBalance(100)
                 .setTipoCuenta(TipoCuenta.CAJA_AHORRO);
 
+        cuenta1.setTitular(peperino.getDni());
+
         when(clienteDao.find(26456439, true)).thenReturn(peperino);
 
         clienteService.agregarCuenta(cuenta1);
@@ -193,6 +201,8 @@ public class ClienteServiceTest {
                 .setBalance(100)
                 .setTipoCuenta(TipoCuenta.CAJA_AHORRO);
 
+        cuenta2.setTitular(peperino.getDni());
+
         assertDoesNotThrow(() -> clienteService.agregarCuenta(cuenta2), "Las cuentas son iguales");
         verify(clienteDao, times(2)).save(peperino);
         assertEquals(2, peperino.getCuentas().size());
@@ -200,8 +210,8 @@ public class ClienteServiceTest {
         assertEquals(TipoMoneda.PESOS, cuenta1.getMoneda());
         assertEquals(TipoCuenta.CAJA_AHORRO, cuenta2.getTipoCuenta());
         assertEquals(TipoMoneda.DOLARES, cuenta2.getMoneda());
-        assertEquals(peperino, cuenta1.getTitular());
-        assertEquals(peperino, cuenta2.getTitular());
+        assertEquals(peperino.getDni(), cuenta1.getTitular());
+        assertEquals(peperino.getDni(), cuenta2.getTitular());
     }
 
     @Test
