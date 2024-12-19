@@ -22,3 +22,8 @@
     "montoPrestamo": 5000,
     "moneda": "PESOS"
 }
+
+
+mvn clean install
+mvn verify
+mvn spring-boot:run
