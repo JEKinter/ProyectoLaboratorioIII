@@ -1,5 +1,6 @@
 package ar.edu.utn.frbb.tup.persistence;
 
+import ar.edu.utn.frbb.tup.model.Cliente;
 import ar.edu.utn.frbb.tup.model.Cuenta;
 import ar.edu.utn.frbb.tup.persistence.entity.ClienteEntity;
 import ar.edu.utn.frbb.tup.persistence.entity.CuentaEntity;
@@ -38,4 +39,22 @@ public class CuentaDao  extends AbstractBaseDao{
         }
         return cuentasDelCliente;
     }
+
+    public List<Cuenta> getCuentas() {
+    List<Cuenta> cuentas = new ArrayList<>();
+    for (Object value : getInMemoryDatabase().values()) {
+        CuentaEntity cuentaEntity = (CuentaEntity) value;
+        Cuenta cuenta = cuentaEntity.toCuenta();
+        cuentas.add(cuenta);
+    }
+    return cuentas;
+    }
+
+    public void delete(long numeroCuenta) {
+        if (getInMemoryDatabase().get(numeroCuenta) == null) {
+            throw new IllegalArgumentException("La cuenta " + numeroCuenta + " no existe.");
+        }
+        getInMemoryDatabase().remove(numeroCuenta);
+    }
+
 }

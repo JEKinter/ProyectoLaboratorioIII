@@ -13,13 +13,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-
 @Service
 public class PrestamoService {
-    private static final Logger logger = LoggerFactory.getLogger(PrestamoService.class);
 
     @Autowired
     ClienteService clienteService;
@@ -34,13 +29,10 @@ public class PrestamoService {
     PrestamoOutputDao prestamoOutputDao;
 
     public PrestamoOutputDto pedirPrestamo(PrestamoDto prestamoDto) throws PrestamoNoOtorgadoException {
-        logger.info("Ingresa Service");
         Prestamo prestamo = new Prestamo(prestamoDto);
-        logger.info("Prestamo moneda " + prestamo.getMoneda());
         PrestamoOutput prestamoOutput = new PrestamoOutput();
         prestamoOutput.setNumeroCliente(prestamo.getNumeroCliente());
         validator(prestamo);
-        logger.info("Supera validator Service");
         prestamoOutput.setEstado(calcularScoring(prestamo.getNumeroCliente()));
         establecerMensajeScoring(prestamoOutput);
         if(prestamoOutput.getEstado().equals("RECHAZADO")){
@@ -83,9 +75,7 @@ public class PrestamoService {
 
     private Cuenta getCuentaPermitida(Prestamo prestamo){
         List<Cuenta> cuentas = clienteService.getCuentasCliente(prestamo.getNumeroCliente());
-        logger.info("Obtiene listado cuentas");
         for (Cuenta c : cuentas){
-            logger.info(c.toString());
             if (c.getMoneda().equals(prestamo.getMoneda())){
                 return c;
             }
@@ -101,8 +91,14 @@ public class PrestamoService {
             throw new PrestamoNoOtorgadoException("El monto a solicitar es mayor al que se le puede ofrecer en este momento");
         }
 
-        if( (getPrestamosCliente((prestamo.getNumeroCliente())).size() > 3 )){
+        if((getPrestamosCliente((prestamo.getNumeroCliente())).size() > 3 )){
             throw new PrestamoNoOtorgadoException("Es deudor de 3 prestamos. Finalice el pago de los mencionados antes de solicitar otro prestamo");
+        }
+
+        try {
+            Cliente cliente = clienteService.buscarClientePorDni(prestamo.getNumeroCliente());
+        } catch (IllegalArgumentException e) {
+            throw new PrestamoNoOtorgadoException(e.getMessage());
         }
 
     }
@@ -111,14 +107,12 @@ public class PrestamoService {
         PrestamoConsultaDto consulta = new PrestamoConsultaDto(dni);
 
         List<Prestamo> prestamosCliente = getPrestamosCliente(dni);
-        logger.info("Lista extension: " + prestamosCliente.size());
         if(prestamosCliente.isEmpty()){
             throw new IllegalArgumentException("El cliente "+dni+" no ha pedido prestamos");
         }
 
         List<PrestamoConsultaCliente> prestamos = new ArrayList<PrestamoConsultaCliente>();
         for (Prestamo p : prestamosCliente) {
-            logger.info(p.toString());
             PrestamoConsultaCliente prestamoCliente = new PrestamoConsultaCliente(p);
             PrestamoOutput prestamoOutput = getPrestamosOutput(p);
             prestamoCliente.setPagosRealizados(prestamoOutput.getPlanPagos().size()-1);

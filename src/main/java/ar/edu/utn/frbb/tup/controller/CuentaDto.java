@@ -24,8 +24,10 @@ public class CuentaDto {
         switch (this.tipoCuenta) {
             case "CAJA_AHORRO":
                 cuentaTipo = TipoCuenta.CAJA_AHORRO;
+                break;
             case "CUENTA_CORRIENTE":
                 cuentaTipo = TipoCuenta.CUENTA_CORRIENTE;
+                break;
         }
         return cuentaTipo;
     }

@@ -12,14 +12,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-
 @Service
 public class ClienteService {
-    private static final Logger logger = LoggerFactory.getLogger(ClienteService.class);
 
     ClienteDao clienteDao;
     CuentaDao cuentaDao;
@@ -31,31 +25,23 @@ public class ClienteService {
     }
 
     public Cliente darDeAltaCliente(ClienteDto clienteDto) throws ClienteAlreadyExistsException {
-        logger.info("Ingresa cliente service");
         Cliente cliente = new Cliente(clienteDto);
 
         if (clienteDao.find(cliente.getDni(), false) != null) {
             throw new ClienteAlreadyExistsException("Ya existe un cliente con DNI " + cliente.getDni());
         }   
-        logger.info("Valida dni");
 
         clienteDao.save(cliente);
         return cliente;
     }
 
     public void agregarCuenta(Cuenta cuenta) throws TipoCuentaAlreadyExistsException {
-        logger.info("Ingresa agregar cuenta");
         Cliente titular = buscarClientePorDni(cuenta.getTitular());
-        logger.info("Encuentra cliente");
-        logger.info(cuenta.toString());
         if (titular.tieneCuenta(cuenta.getTipoCuenta(), cuenta.getMoneda())) {
             throw new TipoCuentaAlreadyExistsException("El cliente ya posee una cuenta de ese tipo y moneda");
         }
-        logger.info("No posee cuenta repetida");
         titular.addCuenta(cuenta);
-        logger.info("Agrega cuenta");
         clienteDao.save(titular);
-        logger.info("cliente guardado");
     }
 
     public Cliente buscarClientePorDni(long dni) {
@@ -69,5 +55,15 @@ public class ClienteService {
     
     public List<Cuenta> getCuentasCliente(long dni){
         return cuentaDao.getCuentasByCliente(dni);
+    }
+
+    public List<Cliente> getClientes(){
+        return clienteDao.getClientes(true);
+    }
+
+    public Cliente eliminarCliente(long dni){
+        Cliente cliente = buscarClientePorDni(dni);
+        clienteDao.delete(dni);
+        return cliente;
     }
 }
