@@ -1,5 +1,7 @@
 package ar.edu.utn.frbb.tup.model;
 import ar.edu.utn.frbb.tup.controller.CuentaDto;
+import ar.edu.utn.frbb.tup.model.exception.CantidadNegativaException;
+import ar.edu.utn.frbb.tup.model.exception.NoAlcanzaException;
 
 import java.time.LocalDateTime;
 import java.util.Random;

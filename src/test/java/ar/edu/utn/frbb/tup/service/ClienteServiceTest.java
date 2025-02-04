@@ -64,7 +64,7 @@ public class ClienteServiceTest {
         pepeRino.setNombre("Pepe");
         pepeRino.setApellido("Rino");
         pepeRino.setFechaNacimiento("1978-03-18");
-        pepeRino.setTipoPersona(TipoPersona.PERSONA_FISICA.toString());
+        pepeRino.setTipoPersona(TipoPersona.PERSONA_FISICA);
 
         when(clienteDao.find(26456437, false)).thenReturn(new Cliente());
 
@@ -134,10 +134,6 @@ public class ClienteServiceTest {
         assertEquals(luciano.getDni(), cuenta.getTitular());
 
     }
-
-    //Agregar una CA$ y CC$ --> success 2 cuentas, titular peperino
-    //Agregar una CA$ y CAU$S --> success 2 cuentas, titular peperino...
-    //Testear clienteService.buscarPorDni
 
     @Test
     public void testAgregarDosCuentasCajaAhorroYCuentaCorrienteEnPesos() throws TipoCuentaAlreadyExistsException {

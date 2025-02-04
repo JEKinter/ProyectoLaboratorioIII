@@ -34,12 +34,12 @@ public class ClienteController {
     }
 
     @GetMapping
-    public List<Cliente> retonarClientes(){
+    public List<Cliente> retornarClientes(){
         return clienteService.getClientes();
     }
 
     @GetMapping("/{clienteDni}")
-    public Cliente retonarCliente(@PathVariable long clienteDni){
+    public Cliente retornarCliente(@PathVariable long clienteDni){
         return clienteService.buscarClientePorDni(clienteDni);
     }
 

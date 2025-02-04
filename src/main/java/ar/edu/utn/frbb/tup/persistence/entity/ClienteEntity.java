@@ -21,7 +21,7 @@ public class ClienteEntity extends BaseEntity {
 
     public ClienteEntity(Cliente cliente) {
         super(cliente.getDni());
-        this.tipoPersona = cliente.getTipoPersona() != null ? cliente.getTipoPersona().getDescripcion() : null;
+        this.tipoPersona = cliente.getTipoPersona().toString();
         this.nombre = cliente.getNombre();
         this.apellido = cliente.getApellido();
         this.fechaAlta = cliente.getFechaAlta();
@@ -40,7 +40,7 @@ public class ClienteEntity extends BaseEntity {
         cliente.setDni(this.getId());
         cliente.setNombre(this.nombre);
         cliente.setApellido(this.apellido);
-        cliente.setTipoPersona(TipoPersona.fromString(this.tipoPersona));
+        cliente.setTipoPersona(TipoPersona.valueOf(this.tipoPersona));
         cliente.setFechaAlta(this.fechaAlta);
         cliente.setFechaNacimiento(this.fechaNacimiento);
 
